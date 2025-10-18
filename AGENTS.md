@@ -1,0 +1,57 @@
+# The project
+
+This is a website full of tools for daily usage in programming world. Such tools are useful for several tasks such as:
+
+**JSON**
+- [ ] JSON parsing
+- [ ] JSON escaping
+- [ ] JSON formatting
+- [ ] JSON minification
+
+**Base64**
+- [ ] Base64 encoding
+- [ ] Base64 decoding
+
+**Timestamp**
+- [ ] Timestamp generation
+- [ ] Timestamp conversion
+- [ ] Timestamp translation
+
+**YAML**
+- [ ] YAML parsing
+- [ ] YAML formatting
+- [ ] YAML generation
+
+**CSV**
+- [ ] CSV parsing
+- [ ] CSV formatting
+
+**Charts**
+- [ ] Chart generation from JSON
+- [ ] Chart generation from CSV
+- [ ] Chart generation from YAML
+
+## Tools of the repository
+- Repository is mainly based on Nuxt 4, TypeScript and Vue 3. Most of the tools will be written in TypeScript.
+- For running the project you will use Bun.
+
+## How to develop a new tool
+- All the tools will be grouped by a category such as JSON, Base64, Timestamp, YAML, CSV, Charts.
+- Each category will have it's own page in the website.
+- Every time a tool is developed, it needs to be tested. For testing we will use Nuxt Test Utils.
+- When the development of a tool is finished it needs to be marked as completed in the AGENTS.md file.
+- Nuxt ui already has tailwindcss installed, so you do not need to install it again.
+
+## How to check if the website is functional
+- Use the browser mcp to check if the website is functional.
+- If there is not any other dev server running, use it and do not start a new one.
+- For checking if the website is functional, always check against the project development url usually it is http://localhost:3000.
+
+## Website layout
+- The website will have a sidebar with the categories of the tools.
+- Each category will use a Link component from Nuxt UI,  and it will be used to navigate to the category page.
+
+## Code rules
+- Do not use error negation comments like // @ts-ignore or // @ts-expect-error unless you are allowed to do so.
+- Always try to use the components from the Nuxt UI library.
+- You must avoid to install any other library unless it is absolutely necessary. You will always ask for permission before installing any library.
