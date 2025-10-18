@@ -1,76 +1,137 @@
+<script setup lang="ts">
+const toolCategories = [
+  {
+    name: 'JSON',
+    path: '/json',
+    icon: 'i-lucide-file-code',
+    description: 'JSON parsing, escaping, formatting, and minification tools',
+    color: 'blue'
+  },
+  {
+    name: 'Base64',
+    path: '/base64',
+    icon: 'i-lucide-shield',
+    description: 'Base64 encoding and decoding tools',
+    color: 'green'
+  },
+  {
+    name: 'Timestamp',
+    path: '/timestamp',
+    icon: 'i-lucide-clock',
+    description: 'Timestamp generation, conversion, and translation tools',
+    color: 'orange'
+  },
+  {
+    name: 'YAML',
+    path: '/yaml',
+    icon: 'i-lucide-file-text',
+    description: 'YAML parsing, formatting, and generation tools',
+    color: 'purple'
+  },
+  {
+    name: 'CSV',
+    path: '/csv',
+    icon: 'i-lucide-table',
+    description: 'CSV parsing and formatting tools',
+    color: 'red'
+  },
+  {
+    name: 'Charts',
+    path: '/charts',
+    icon: 'i-lucide-bar-chart-3',
+    description: 'Chart generation from JSON, CSV, and YAML data',
+    color: 'indigo'
+  }
+]
+</script>
+
 <template>
-  <div>
-    <UPageHero
-      title="Nuxt Starter Template"
-      description="A production-ready starter template powered by Nuxt UI. Build beautiful, accessible, and performant applications in minutes, not hours."
-      :links="[{
-        label: 'Get started',
-        to: 'https://ui.nuxt.com/docs/getting-started/installation/nuxt',
-        target: '_blank',
-        trailingIcon: 'i-lucide-arrow-right',
-        size: 'xl'
-      }, {
-        label: 'Use this template',
-        to: 'https://github.com/nuxt-ui-templates/starter',
-        target: '_blank',
-        icon: 'i-simple-icons-github',
-        size: 'xl',
-        color: 'neutral',
-        variant: 'subtle'
-      }]"
-    />
+  <div class="container mx-auto px-4 py-8">
+    <!-- Hero Section -->
+    <div class="text-center mb-12">
+      <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+        Programming Tools
+      </h1>
+      <p class="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+        A collection of essential tools for daily programming tasks. 
+        Parse, format, convert, and visualize data with ease.
+      </p>
+    </div>
 
-    <UPageSection
-      id="features"
-      title="Everything you need to build modern Nuxt apps"
-      description="Start with a solid foundation. This template includes all the essentials for building production-ready applications with Nuxt UI's powerful component system."
-      :features="[{
-        icon: 'i-lucide-rocket',
-        title: 'Production-ready from day one',
-        description: 'Pre-configured with TypeScript, ESLint, Tailwind CSS, and all the best practices. Focus on building features, not setting up tooling.'
-      }, {
-        icon: 'i-lucide-palette',
-        title: 'Beautiful by default',
-        description: 'Leveraging Nuxt UI\'s design system with automatic dark mode, consistent spacing, and polished components that look great out of the box.'
-      }, {
-        icon: 'i-lucide-zap',
-        title: 'Lightning fast',
-        description: 'Optimized for performance with SSR/SSG support, automatic code splitting, and edge-ready deployment. Your users will love the speed.'
-      }, {
-        icon: 'i-lucide-blocks',
-        title: '100+ components included',
-        description: 'Access Nuxt UI\'s comprehensive component library. From forms to navigation, everything is accessible, responsive, and customizable.'
-      }, {
-        icon: 'i-lucide-code-2',
-        title: 'Developer experience first',
-        description: 'Auto-imports, hot module replacement, and TypeScript support. Write less boilerplate and ship more features.'
-      }, {
-        icon: 'i-lucide-shield-check',
-        title: 'Built for scale',
-        description: 'Enterprise-ready architecture with proper error handling, SEO optimization, and security best practices built-in.'
-      }]"
-    />
+    <!-- Tool Categories Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <UCard
+        v-for="category in toolCategories"
+        :key="category.name"
+        :to="category.path"
+        class="hover:shadow-lg transition-shadow duration-200 cursor-pointer"
+      >
+        <template #header>
+          <div class="flex items-center space-x-3">
+            <UIcon 
+              :name="category.icon" 
+              :class="`w-8 h-8 text-${category.color}-500`"
+            />
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+              {{ category.name }}
+            </h3>
+          </div>
+        </template>
 
-    <UPageSection>
-      <UPageCTA
-        title="Ready to build your next Nuxt app?"
-        description="Join thousands of developers building with Nuxt and Nuxt UI. Get this template and start shipping today."
-        variant="subtle"
-        :links="[{
-          label: 'Start building',
-          to: 'https://ui.nuxt.com/docs/getting-started/installation/nuxt',
-          target: '_blank',
-          trailingIcon: 'i-lucide-arrow-right',
-          color: 'neutral'
-        }, {
-          label: 'View on GitHub',
-          to: 'https://github.com/nuxt-ui-templates/starter',
-          target: '_blank',
-          icon: 'i-simple-icons-github',
-          color: 'neutral',
-          variant: 'outline'
-        }]"
-      />
-    </UPageSection>
+        <p class="text-gray-600 dark:text-gray-300">
+          {{ category.description }}
+        </p>
+
+        <template #footer>
+          <UButton 
+            :to="category.path"
+            color="primary"
+            variant="soft"
+            class="w-full"
+          >
+            Explore {{ category.name }} Tools
+          </UButton>
+        </template>
+      </UCard>
+    </div>
+
+    <!-- Features Section -->
+    <div class="mt-16">
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white text-center mb-8">
+        Why Choose Our Tools?
+      </h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="text-center">
+          <UIcon name="i-lucide-zap" class="w-12 h-12 text-yellow-500 mx-auto mb-4" />
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+            Fast & Efficient
+          </h3>
+          <p class="text-gray-600 dark:text-gray-300">
+            Process your data quickly with optimized algorithms and modern web technologies.
+          </p>
+        </div>
+        
+        <div class="text-center">
+          <UIcon name="i-lucide-shield-check" class="w-12 h-12 text-green-500 mx-auto mb-4" />
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+            Secure & Private
+          </h3>
+          <p class="text-gray-600 dark:text-gray-300">
+            All processing happens in your browser. Your data never leaves your device.
+          </p>
+        </div>
+        
+        <div class="text-center">
+          <UIcon name="i-lucide-code" class="w-12 h-12 text-blue-500 mx-auto mb-4" />
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+            Developer Friendly
+          </h3>
+          <p class="text-gray-600 dark:text-gray-300">
+            Built with modern web standards and designed for developers by developers.
+          </p>
+        </div>
+      </div>
+    </div>
   </div>
 </template>

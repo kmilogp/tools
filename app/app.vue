@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 useHead({
   meta: [
     { name: 'viewport', content: 'width=device-width, initial-scale=1' }
@@ -11,8 +11,8 @@ useHead({
   }
 })
 
-const title = 'Nuxt Starter Template'
-const description = 'A production-ready starter template powered by Nuxt UI. Build beautiful, accessible, and performant applications in minutes, not hours.'
+const title = 'Programming Tools'
+const description = 'A collection of useful tools for daily programming tasks including JSON, Base64, Timestamp, YAML, CSV, and Chart utilities.'
 
 useSeoMeta({
   title,
@@ -27,52 +27,39 @@ useSeoMeta({
 
 <template>
   <UApp>
-    <UHeader>
-      <template #left>
-        <NuxtLink to="/">
-          <AppLogo class="w-auto h-6 shrink-0" />
-        </NuxtLink>
+    <div class="flex h-screen">
+      <!-- Sidebar -->
+      <ToolsSidebar />
+      
+      <!-- Main Content -->
+      <div class="flex-1 flex flex-col">
+        <UHeader>
+          <template #left>
+            <NuxtLink to="/" class="flex items-center space-x-2">
+              <UIcon name="i-lucide-wrench" class="w-6 h-6 text-primary-500" />
+              <span class="text-lg font-semibold text-gray-900 dark:text-white">
+                Programming Tools
+              </span>
+            </NuxtLink>
+          </template>
 
-        <TemplateMenu />
-      </template>
+          <template #right>
+            <UColorModeButton />
+          </template>
+        </UHeader>
 
-      <template #right>
-        <UColorModeButton />
+        <UMain class="flex-1 overflow-auto">
+          <NuxtPage />
+        </UMain>
 
-        <UButton
-          to="https://github.com/nuxt-ui-templates/starter"
-          target="_blank"
-          icon="i-simple-icons-github"
-          aria-label="GitHub"
-          color="neutral"
-          variant="ghost"
-        />
-      </template>
-    </UHeader>
-
-    <UMain>
-      <NuxtPage />
-    </UMain>
-
-    <USeparator icon="i-simple-icons-nuxtdotjs" />
-
-    <UFooter>
-      <template #left>
-        <p class="text-sm text-muted">
-          Built with Nuxt UI • © {{ new Date().getFullYear() }}
-        </p>
-      </template>
-
-      <template #right>
-        <UButton
-          to="https://github.com/nuxt-ui-templates/starter"
-          target="_blank"
-          icon="i-simple-icons-github"
-          aria-label="GitHub"
-          color="neutral"
-          variant="ghost"
-        />
-      </template>
-    </UFooter>
+        <UFooter>
+          <template #left>
+            <p class="text-sm text-muted">
+              Built with Nuxt UI • © {{ new Date().getFullYear() }}
+            </p>
+          </template>
+        </UFooter>
+      </div>
+    </div>
   </UApp>
 </template>
