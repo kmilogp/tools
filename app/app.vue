@@ -27,39 +27,34 @@ useSeoMeta({
 
 <template>
   <UApp>
-    <div class="flex h-screen">
+    <UDashboardGroup>
       <!-- Sidebar -->
       <ToolsSidebar />
-      
+
       <!-- Main Content -->
-      <div class="flex-1 flex flex-col">
-        <UHeader>
-          <template #left>
-            <NuxtLink to="/" class="flex items-center space-x-2">
-              <UIcon name="i-lucide-wrench" class="w-6 h-6 text-primary-500" />
-              <span class="text-lg font-semibold text-gray-900 dark:text-white">
-                Programming Tools
-              </span>
-            </NuxtLink>
-          </template>
+      <UDashboardPanel>
+        <template #header>
+          <UDashboardNavbar title="Programming Tools">
+            <template #trailing>
+              <UColorModeButton />
+            </template>
+          </UDashboardNavbar>
+        </template>
 
-          <template #right>
-            <UColorModeButton />
-          </template>
-        </UHeader>
-
-        <UMain class="flex-1 overflow-auto">
+        <template #body>
           <NuxtPage />
-        </UMain>
+        </template>
 
-        <UFooter>
-          <template #left>
-            <p class="text-sm text-muted">
-              Built with Nuxt UI • © {{ new Date().getFullYear() }}
-            </p>
-          </template>
-        </UFooter>
-      </div>
-    </div>
+        <template #footer>
+          <UFooter>
+            <template #left>
+              <p class="text-sm text-muted">
+                Built with Nuxt UI • © {{ new Date().getFullYear() }}
+              </p>
+            </template>
+          </UFooter>
+        </template>
+      </UDashboardPanel>
+    </UDashboardGroup>
   </UApp>
 </template>

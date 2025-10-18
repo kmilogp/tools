@@ -1,69 +1,71 @@
 <script setup lang="ts">
-const toolCategories = [
+import type { NavigationMenuItem } from '@nuxt/ui'
+
+const toolCategories: NavigationMenuItem[] = [
   {
-    name: 'JSON',
-    path: '/json',
+    label: 'JSON',
     icon: 'i-lucide-file-code',
-    description: 'JSON parsing, escaping, formatting, and minification tools'
+    to: '/json'
   },
   {
-    name: 'Base64',
-    path: '/base64',
+    label: 'Base64',
     icon: 'i-lucide-shield',
-    description: 'Base64 encoding and decoding tools'
+    to: '/base64'
   },
   {
-    name: 'Timestamp',
-    path: '/timestamp',
+    label: 'Timestamp',
     icon: 'i-lucide-clock',
-    description: 'Timestamp generation, conversion, and translation tools'
+    to: '/timestamp'
   },
   {
-    name: 'YAML',
-    path: '/yaml',
+    label: 'YAML',
     icon: 'i-lucide-file-text',
-    description: 'YAML parsing, formatting, and generation tools'
+    to: '/yaml'
   },
   {
-    name: 'CSV',
-    path: '/csv',
+    label: 'CSV',
     icon: 'i-lucide-table',
-    description: 'CSV parsing and formatting tools'
+    to: '/csv'
   },
   {
-    name: 'Charts',
-    path: '/charts',
+    label: 'Charts',
     icon: 'i-lucide-bar-chart-3',
-    description: 'Chart generation from JSON, CSV, and YAML data'
+    to: '/charts'
   }
 ]
 </script>
 
 <template>
-  <div class="w-64 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 h-full">
-    <div class="p-6">
-      <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-6">
-        Tools Categories
-      </h2>
-      
-      <nav class="space-y-2">
-        <NuxtLink
-          v-for="category in toolCategories"
-          :key="category.name"
-          :to="category.path"
-          class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200 group"
-        >
-          <UIcon :name="category.icon" class="w-5 h-5 text-gray-500 dark:text-gray-400 group-hover:text-primary-500" />
-          <div class="flex-1 min-w-0">
-            <p class="text-sm font-medium text-gray-900 dark:text-white">
-              {{ category.name }}
-            </p>
-            <p class="text-xs text-gray-500 dark:text-gray-400 truncate">
-              {{ category.description }}
-            </p>
-          </div>
-        </NuxtLink>
-      </nav>
-    </div>
-  </div>
+  <UDashboardSidebar
+    collapsible
+    resizable
+  >
+    <template #header="{ collapsed }">
+      <div
+        v-if="!collapsed"
+        class="flex items-center space-x-2"
+      >
+        <UIcon
+          name="i-lucide-wrench"
+          class="w-6 h-6 text-primary-500"
+        />
+        <span class="text-lg font-semibold text-gray-900 dark:text-white">
+          Programming Tools
+        </span>
+      </div>
+      <UIcon
+        v-else
+        name="i-lucide-wrench"
+        class="w-6 h-6 text-primary-500 mx-auto"
+      />
+    </template>
+
+    <template #default="{ collapsed }">
+      <UNavigationMenu
+        :collapsed="collapsed"
+        :items="toolCategories"
+        orientation="vertical"
+      />
+    </template>
+  </UDashboardSidebar>
 </template>
