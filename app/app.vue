@@ -28,15 +28,13 @@ useSeoMeta({
 <template>
   <UApp>
     <UDashboardGroup>
-      <!-- Sidebar -->
       <ToolsSidebar />
 
-      <!-- Main Content -->
       <UDashboardPanel>
         <template #header>
           <UDashboardNavbar title="Programming Tools">
             <template #trailing>
-              <UColorModeButton />
+              <UColorModeButton color="primary" />
             </template>
           </UDashboardNavbar>
         </template>
@@ -47,11 +45,12 @@ useSeoMeta({
 
         <template #footer>
           <UFooter>
-            <template #left>
-              <p class="text-sm text-muted">
-                Built with Nuxt UI • © {{ new Date().getFullYear() }}
-              </p>
-            </template>
+            <p class="text-sm text-muted">
+              Built with <UIcon name="i-logos-nuxt-icon" /> and <UIcon
+                name="i-lucide-heart"
+                class="text-red-500 text-md"
+              /> • © {{ new Date().getFullYear() }}
+            </p>
           </UFooter>
         </template>
       </UDashboardPanel>

@@ -65,7 +65,7 @@ const columnVisibility = ref({})
 // Generate table based on current tool and input
 const generateTable = () => {
   if (!inputData.value.trim()) {
-    tableData.value = []
+    tableData.value = [] as TableData[]
     tableColumns.value = []
     tableAnalysis.value = null
     return
@@ -80,10 +80,10 @@ const generateTable = () => {
       maxColumns: maxColumns.value
     }) as { data: TableData[], columns: TableColumn<TableData>[] }
 
-    tableData.value = result.data
+    tableData.value = result.data as TableData[]
     tableColumns.value = result.columns
     // @ts-expect-error - Type assertion needed for table data
-    tableAnalysis.value = analyzeTableData(result.data)
+    tableAnalysis.value = analyzeTableData(result.data as TableData[])
   } catch (error) {
     console.error('Error generating table:', error)
     // You could show a toast notification here
@@ -98,7 +98,7 @@ const exportData = (format: 'json' | 'csv' | 'yaml') => {
   if (tableData.value.length === 0) return
 
   // @ts-expect-error - Type assertion needed for table data
-  const exported = exportTableData(tableData.value, format)
+  const exported = exportTableData(tableData.value as TableData[], format)
   const blob = new Blob([exported], { type: 'text/plain' })
   const url = URL.createObjectURL(blob)
   const a = document.createElement('a')
@@ -346,9 +346,9 @@ const loadSampleData = () => {
             <UDropdownMenu
               :items="[
                 [
-                  { label: 'Export as JSON', icon: 'i-lucide-file-code', click: () => exportData('json') },
-                  { label: 'Export as CSV', icon: 'i-lucide-table', click: () => exportData('csv') },
-                  { label: 'Export as YAML', icon: 'i-lucide-file-text', click: () => exportData('yaml') }
+                  { label: 'Export as JSON', icon: 'i-lucide-file-code', onSelect: () => exportData('json') },
+                  { label: 'Export as CSV', icon: 'i-lucide-file-spreadsheet', onSelect: () => exportData('csv') },
+                  { label: 'Export as YAML', icon: 'i-lucide-file-text', onSelect: () => exportData('yaml') }
                 ]
               ]"
             >

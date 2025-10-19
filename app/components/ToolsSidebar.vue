@@ -24,13 +24,8 @@ const toolCategories: NavigationMenuItem[] = [
   },
   {
     label: 'CSV',
-    icon: 'i-lucide-table',
+    icon: 'i-lucide-file-spreadsheet',
     to: '/csv'
-  },
-  {
-    label: 'Charts',
-    icon: 'i-lucide-bar-chart-3',
-    to: '/charts'
   },
   {
     label: 'Table',
@@ -38,14 +33,16 @@ const toolCategories: NavigationMenuItem[] = [
     to: '/table'
   }
 ]
+
+const collapsed = ref(false)
 </script>
 
 <template>
   <UDashboardSidebar
-    :collapsed="false"
-    resizable
+    v-model:collapsed="collapsed"
+    collapsible
   >
-    <template #header="{ collapsed }">
+    <template #header>
       <div
         v-if="!collapsed"
         class="flex items-center space-x-2"
@@ -65,11 +62,21 @@ const toolCategories: NavigationMenuItem[] = [
       />
     </template>
 
-    <template #default="{ collapsed }">
+    <template #default>
       <UNavigationMenu
         :collapsed="collapsed"
         :items="toolCategories"
         orientation="vertical"
+      />
+    </template>
+
+    <template #footer>
+      <UButton
+        variant="solid"
+        size="sm"
+        :trailing-icon="collapsed ? 'i-lucide-chevron-right' : 'i-lucide-chevron-left'"
+        class="ml-auto"
+        @click="collapsed = !collapsed"
       />
     </template>
   </UDashboardSidebar>

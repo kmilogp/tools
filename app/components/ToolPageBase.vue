@@ -199,7 +199,7 @@ defineExpose({
     </div>
 
     <div class="flex flex-wrap gap-4 mt-6 justify-between items-center">
-      <div class="space-x-4">
+      <div class="flex flex-wrap gap-2">
         <UButton
           :disabled="!input.trim()"
           color="primary"
