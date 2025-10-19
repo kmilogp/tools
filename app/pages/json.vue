@@ -23,7 +23,7 @@ const tools = [
     description: 'Format and beautify JSON with proper indentation and spacing.',
     icon: 'i-lucide-align-left',
     color: 'primary' as const,
-    action: () => formatJsonTool()
+    function: formatJson
   },
   {
     id: 'minifier',
@@ -31,7 +31,7 @@ const tools = [
     description: 'Minify JSON by removing unnecessary whitespace and characters.',
     icon: 'i-lucide-minimize-2',
     color: 'warning' as const,
-    action: () => minifyJsonTool()
+    function: minifyJson
   },
   {
     id: 'escaper',
@@ -39,7 +39,7 @@ const tools = [
     description: 'Escape special characters in JSON strings for safe usage.',
     icon: 'i-lucide-shield',
     color: 'success' as const,
-    action: () => escapeJsonTool()
+    function: escapeJson
   },
   {
     id: 'unescaper',
@@ -47,7 +47,7 @@ const tools = [
     description: 'Unescape JSON strings by parsing escaped characters.',
     icon: 'i-lucide-shield-check',
     color: 'info' as const,
-    action: () => unescapeJsonTool()
+    function: unescapeJson
   },
   {
     id: 'validator',
@@ -55,94 +55,41 @@ const tools = [
     description: 'Parse and validate JSON strings with detailed error reporting.',
     icon: 'i-lucide-code',
     color: 'primary' as const,
-    action: () => validateJsonTool()
+    function: (input: string) => {
+      const parsed = validateJson(input)
+      return JSON.stringify(parsed, null, 2)
+    }
   }
 ]
+
+function switchInputAndOutput() {
+  const temp = jsonInput.value
+  jsonInput.value = jsonOutput.value
+  jsonOutput.value = temp
+}
 
 function clearError() {
   errorMessage.value = ''
 }
 
-function formatJsonTool() {
-  clearError()
-  if (!jsonInput.value.trim()) {
-    jsonOutput.value = ''
-    return
-  }
-
-  try {
-    jsonOutput.value = formatJson(jsonInput.value)
-  } catch (error) {
-    errorMessage.value = error instanceof Error ? error.message : 'Unknown error occurred'
-    jsonOutput.value = ''
-  }
-}
-
-function minifyJsonTool() {
-  clearError()
-  if (!jsonInput.value.trim()) {
-    jsonOutput.value = ''
-    return
-  }
-
-  try {
-    jsonOutput.value = minifyJson(jsonInput.value)
-  } catch (error) {
-    errorMessage.value = error instanceof Error ? error.message : 'Unknown error occurred'
-    jsonOutput.value = ''
-  }
-}
-
-function escapeJsonTool() {
-  clearError()
-  if (!jsonInput.value.trim()) {
-    jsonOutput.value = ''
-    return
-  }
-
-  try {
-    jsonOutput.value = escapeJson(jsonInput.value)
-  } catch (error) {
-    errorMessage.value = error instanceof Error ? error.message : 'Unknown error occurred'
-    jsonOutput.value = ''
-  }
-}
-
-function unescapeJsonTool() {
-  clearError()
-  if (!jsonInput.value.trim()) {
-    jsonOutput.value = ''
-    return
-  }
-
-  try {
-    jsonOutput.value = unescapeJson(jsonInput.value)
-  } catch (error) {
-    errorMessage.value = error instanceof Error ? error.message : 'Unknown error occurred'
-    jsonOutput.value = ''
-  }
-}
-
-function validateJsonTool() {
-  clearError()
-  if (!jsonInput.value.trim()) {
-    jsonOutput.value = ''
-    return
-  }
-
-  try {
-    const parsed = validateJson(jsonInput.value)
-    jsonOutput.value = JSON.stringify(parsed, null, 2)
-  } catch (error) {
-    errorMessage.value = error instanceof Error ? error.message : 'Unknown error occurred'
-    jsonOutput.value = ''
-  }
-}
-
 function executeSelectedTool() {
+  clearError()
+  if (!jsonInput.value.trim()) {
+    jsonOutput.value = ''
+    return
+  }
+
   const tool = tools.find(t => t.id === selectedTool.value)
-  if (tool) {
-    tool.action()
+
+  if (!tool) {
+    return
+  }
+
+  try {
+    jsonOutput.value = tool.function(jsonInput.value)
+  } catch (error) {
+    errorMessage.value = error instanceof Error ? error.message : 'Unknown error occurred'
+    jsonOutput.value = ''
   }
 }
 
@@ -177,7 +124,7 @@ watch(selectedTool, () => {
         </h1>
       </div>
       <p class="text-lg text-gray-600 dark:text-gray-300">
-        Parse, format, escape, and minify JSON data with our comprehensive set
+        Format, minify, escape, unescape, and validate JSON data with our comprehensive set
         of tools.
       </p>
     </div>
@@ -233,7 +180,7 @@ watch(selectedTool, () => {
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <div>
         <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-          Input JSON
+          Input
         </h3>
         <ClientOnly>
           <MonacoEditor
@@ -271,6 +218,17 @@ watch(selectedTool, () => {
           class="w-4 h-4 mr-2"
         />
         Execute Tool
+      </UButton>
+
+      <UButton
+        color="primary"
+        @click="switchInputAndOutput"
+      >
+        <UIcon
+          name="i-lucide-arrow-left-right"
+          class="w-4 h-4 mr-2"
+        />
+        Switch Input and Output
       </UButton>
 
       <UButton
