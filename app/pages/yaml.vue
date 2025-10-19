@@ -3,8 +3,7 @@ import {
   formatYaml,
   validateYaml,
   yamlToJson,
-  jsonToYaml,
-  minifyYaml
+  jsonToYaml
 } from '~/utils/tools/yaml'
 
 useHead({
@@ -63,14 +62,6 @@ const tools = [
     icon: 'i-lucide-arrow-left',
     color: 'warning' as const,
     function: jsonToYaml
-  },
-  {
-    id: 'minifier',
-    name: 'YAML Minifier',
-    description: 'Minify YAML by removing unnecessary whitespace and comments.',
-    icon: 'i-lucide-minimize-2',
-    color: 'secondary' as const,
-    function: minifyYaml
   }
 ]
 </script>

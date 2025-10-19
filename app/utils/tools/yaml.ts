@@ -102,15 +102,3 @@ export function getYamlInfo(yamlString: string): {
     }
   }
 }
-
-/**
- * Minifies a YAML string by removing unnecessary whitespace and comments
- */
-export function minifyYaml(yamlString: string): string {
-  try {
-    const parsed = yaml.parse(yamlString)
-    return yaml.stringify(parsed, { indent: 1 })
-  } catch (error) {
-    throw new Error(`Invalid YAML: ${error instanceof Error ? error.message : 'Unknown error'}`)
-  }
-}

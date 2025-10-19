@@ -5,8 +5,7 @@ import {
   validateYaml,
   yamlToJson,
   jsonToYaml,
-  getYamlInfo,
-  minifyYaml
+  getYamlInfo
 } from './yaml'
 
 describe('YAML Tools', () => {
@@ -203,32 +202,6 @@ service:
       expect(result.isValid).toBe(true)
       expect(result.length).toBe(0)
       expect(result.lines).toBe(1)
-    })
-  })
-
-  describe('minifyYaml', () => {
-    it('should minify YAML by removing unnecessary whitespace', () => {
-      const result = minifyYaml(sampleYaml)
-      expect(result).toContain('name: John Doe')
-      expect(result).toContain('age: 30')
-    })
-
-    it('should throw error for invalid YAML', () => {
-      expect(() => minifyYaml('invalid: yaml: content: [')).toThrow('Invalid YAML')
-    })
-
-    it('should handle empty string', () => {
-      const result = minifyYaml('')
-      expect(result).toBe('null\n')
-    })
-
-    it('should remove comments when minifying', () => {
-      const yamlWithComments = `# Comment
-name: John Doe
-# Another comment
-age: 30`
-      const result = minifyYaml(yamlWithComments)
-      expect(result).not.toContain('#')
     })
   })
 
