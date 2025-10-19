@@ -55,3 +55,4 @@ This is a website full of tools for daily usage in programming world. Such tools
 - Do not use error negation comments like // @ts-ignore or // @ts-expect-error unless you are allowed to do so.
 - Always try to use the components from the Nuxt UI library.
 - You must avoid to install any other library unless it is absolutely necessary. You will always ask for permission before installing any library.
+- For colors use the colors from the Nuxt UI library (primary, secondary, success, warning, error, info).
