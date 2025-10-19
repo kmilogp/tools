@@ -15,6 +15,7 @@ const jsonInput = ref('')
 const jsonOutput = ref('')
 const errorMessage = ref('')
 const selectedTool = ref('formatter')
+const toast = useToast()
 
 const tools = [
   {
@@ -66,6 +67,14 @@ function switchInputAndOutput() {
   const temp = jsonInput.value
   jsonInput.value = jsonOutput.value
   jsonOutput.value = temp
+}
+
+function copyOutput() {
+  navigator.clipboard.writeText(jsonOutput.value)
+  toast.add({
+    title: 'Output copied to clipboard',
+    color: 'info'
+  })
 }
 
 function clearError() {
@@ -129,7 +138,6 @@ watch(selectedTool, () => {
       </p>
     </div>
 
-    <!-- Tool Selector -->
     <div class="mb-6">
       <UCard>
         <template #header>
@@ -138,7 +146,7 @@ watch(selectedTool, () => {
           </h3>
         </template>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
           <UButton
             v-for="tool in tools"
             :key="tool.id"
@@ -166,7 +174,6 @@ watch(selectedTool, () => {
       </UCard>
     </div>
 
-    <!-- Error Message -->
     <UAlert
       v-if="errorMessage"
       color="error"
@@ -176,7 +183,6 @@ watch(selectedTool, () => {
       :description="'Please check your input and try again.'"
     />
 
-    <!-- Input/Output Editor -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <div>
         <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">
@@ -206,7 +212,6 @@ watch(selectedTool, () => {
       </div>
     </div>
 
-    <!-- Action Buttons -->
     <div class="flex flex-wrap gap-4 mt-6">
       <UButton
         :disabled="!jsonInput.trim()"
@@ -221,7 +226,7 @@ watch(selectedTool, () => {
       </UButton>
 
       <UButton
-        color="primary"
+        color="warning"
         @click="switchInputAndOutput"
       >
         <UIcon
@@ -229,6 +234,17 @@ watch(selectedTool, () => {
           class="w-4 h-4 mr-2"
         />
         Switch Input and Output
+      </UButton>
+
+      <UButton
+        color="info"
+        @click="copyOutput"
+      >
+        <UIcon
+          name="i-lucide-copy"
+          class="w-4 h-4 mr-2"
+        />
+        Copy Output
       </UButton>
 
       <UButton
