@@ -21,11 +21,11 @@ This is a website full of tools for daily usage in programming world. Such tools
 - [ ] Timestamp translation
 
 **YAML**
-- [ ] YAML parsing
-- [ ] YAML formatting
-- [ ] YAML validation
-- [ ] YAML to JSON conversion
-- [ ] JSON to YAML conversion
+- [x] YAML parsing
+- [x] YAML formatting
+- [x] YAML validation
+- [x] YAML to JSON conversion
+- [x] JSON to YAML conversion
 
 **CSV**
 - [ ] CSV parsing
