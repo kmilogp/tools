@@ -23,7 +23,9 @@ This is a website full of tools for daily usage in programming world. Such tools
 **YAML**
 - [ ] YAML parsing
 - [ ] YAML formatting
-- [ ] YAML generation
+- [ ] YAML validation
+- [ ] YAML to JSON conversion
+- [ ] JSON to YAML conversion
 
 **CSV**
 - [ ] CSV parsing
