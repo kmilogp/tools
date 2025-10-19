@@ -15,11 +15,6 @@ This is a website full of tools for daily usage in programming world. Such tools
 - [x] Base64 URL decoding
 - [x] Base64 validation and analysis
 
-**Timestamp**
-- [ ] Timestamp generation
-- [ ] Timestamp conversion
-- [ ] Timestamp translation
-
 **YAML**
 - [x] YAML parsing
 - [x] YAML formatting
@@ -35,6 +30,11 @@ This is a website full of tools for daily usage in programming world. Such tools
 - [x] YAML to CSV conversion
 - [x] CSV formatting
 - [x] CSV analysis
+
+**Timestamp**
+- [x] Timestamp generation
+- [x] Timestamp conversion
+- [x] Timestamp translation
 
 **Charts**
 - [ ] Chart generation from JSON
