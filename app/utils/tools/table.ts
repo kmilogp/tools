@@ -1,5 +1,6 @@
 import type { TableColumn } from '@nuxt/ui'
 import { parse as parseYaml } from 'yaml'
+import { parseCsv } from './csv'
 
 export interface TableData {
   [key: string]: unknown
@@ -88,44 +89,27 @@ export function generateTableFromCsv(
   const { includeIndex = false, maxColumns = 20 } = options
 
   try {
-    const lines = csvData.trim().split('\n').filter(line => line.length > 0)
-    if (lines.length === 0) {
-      throw new Error('Empty CSV data')
+    // Use the existing CSV parser
+    const parsedData = parseCsv(csvData)
+
+    if (parsedData.length === 0) {
+      return { data: [], columns: [] }
     }
 
-    // Parse CSV (simple implementation)
-    const parseCsvLine = (line: string): string[] => {
-      const result: string[] = []
-      let current = ''
-      let inQuotes = false
-
-      for (let i = 0; i < line.length; i++) {
-        const char = line[i]
-        if (char === '"') {
-          inQuotes = !inQuotes
-        } else if (char === ',' && !inQuotes) {
-          result.push(current.trim())
-          current = ''
-        } else {
-          current += char
-        }
-      }
-      result.push(current.trim())
-      return result
-    }
-
-    const headers = parseCsvLine(lines[0] || '')
+    // Get headers and limit them
+    const headers = Object.keys(parsedData[0])
     const limitedHeaders = headers.slice(0, maxColumns)
 
-    const data: TableData[] = lines.slice(1).map((line) => {
-      const values = parseCsvLine(line)
-      const row: TableData = {}
-      limitedHeaders.forEach((header, i) => {
-        row[header] = values[i] || ''
+    // Convert parsed data to TableData format
+    const data: TableData[] = parsedData.map((row) => {
+      const limitedRow: TableData = {}
+      limitedHeaders.forEach((header) => {
+        limitedRow[header] = row[header] || ''
       })
-      return row
+      return limitedRow
     })
 
+    // Generate columns
     const columns: TableColumn<TableData>[] = limitedHeaders.map(header => ({
       accessorKey: header,
       header: header.charAt(0).toUpperCase() + header.slice(1),

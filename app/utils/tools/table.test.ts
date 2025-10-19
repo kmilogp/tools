@@ -107,10 +107,10 @@ John,30`
       expect((result.columns[0] as any).accessorKey).toBe('index')
     })
 
-    it('should throw error for empty CSV', () => {
-      expect(() => {
-        generateTableFromCsv('')
-      }).toThrow('Empty CSV data')
+    it('should handle empty CSV data', () => {
+      const result = generateTableFromCsv('')
+      expect(result.data).toEqual([])
+      expect(result.columns).toEqual([])
     })
   })
 
