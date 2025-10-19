@@ -9,8 +9,11 @@ This is a website full of tools for daily usage in programming world. Such tools
 - [x] JSON minification
 
 **Base64**
-- [ ] Base64 encoding
-- [ ] Base64 decoding
+- [x] Base64 encoding
+- [x] Base64 decoding
+- [x] Base64 URL encoding
+- [x] Base64 URL decoding
+- [x] Base64 validation and analysis
 
 **Timestamp**
 - [ ] Timestamp generation
