@@ -3,9 +3,9 @@
 This is a website full of tools for daily usage in programming world. Such tools are useful for several tasks such as:
 
 **JSON**
-- [ ] JSON parsing
-- [ ] JSON escaping
 - [ ] JSON formatting
+- [ ] JSON escaping
+- [ ] JSON unescaping
 - [ ] JSON minification
 
 **Base64**
@@ -41,6 +41,7 @@ This is a website full of tools for daily usage in programming world. Such tools
 - Every time a tool is developed, it needs to be tested. For testing we will use Nuxt Test Utils.
 - When the development of a tool is finished it needs to be marked as completed in the AGENTS.md file.
 - Nuxt ui already has tailwindcss installed, so you do not need to install it again.
+- The tools functionality is located in the app/utils/tools folder. There is a file for each tool category.
 
 ## How to check if the website is functional
 - Use the browser mcp to check if the website is functional.

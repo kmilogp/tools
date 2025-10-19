@@ -2,21 +2,19 @@
 useHead({
   title: 'JSON Tools - Programming Tools',
   meta: [
-    { name: 'description', content: 'JSON parsing, escaping, formatting, and minification tools for developers.' }
+    {
+      name: 'description',
+      content: 'JSON parsing, escaping, formatting, and minification tools for developers.'
+    }
   ]
 })
 
-const json = ref('')
+const jsonInput = ref('')
+const jsonOutput = ref('')
 </script>
 
 <template>
-  <div class="container mx-auto px-4 py-8">
-    <ClientOnly>
-      <MonacoEditor
-        v-model="json"
-        lang="json"
-      />
-    </ClientOnly>
+  <div class="px-4 py-8">
     <div class="mb-8">
       <div class="flex items-center space-x-3 mb-4">
         <UIcon
@@ -28,12 +26,18 @@ const json = ref('')
         </h1>
       </div>
       <p class="text-lg text-gray-600 dark:text-gray-300">
-        Parse, format, escape, and minify JSON data with our comprehensive set of tools.
+        Parse, format, escape, and minify JSON data with our comprehensive set
+        of tools.
       </p>
     </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <InputOutputEditor
+        v-model:input="jsonInput"
+        v-model:output="jsonOutput"
+      />
+    </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-      <!-- JSON Parsing Tool -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-4">
       <UCard class="hover:shadow-lg transition-shadow duration-200">
         <template #header>
           <div class="flex items-center space-x-2">
@@ -61,7 +65,6 @@ const json = ref('')
         </UButton>
       </UCard>
 
-      <!-- JSON Escaping Tool -->
       <UCard class="hover:shadow-lg transition-shadow duration-200">
         <template #header>
           <div class="flex items-center space-x-2">
@@ -89,7 +92,6 @@ const json = ref('')
         </UButton>
       </UCard>
 
-      <!-- JSON Formatter Tool -->
       <UCard class="hover:shadow-lg transition-shadow duration-200">
         <template #header>
           <div class="flex items-center space-x-2">
@@ -117,7 +119,6 @@ const json = ref('')
         </UButton>
       </UCard>
 
-      <!-- JSON Minifier Tool -->
       <UCard class="hover:shadow-lg transition-shadow duration-200">
         <template #header>
           <div class="flex items-center space-x-2">
@@ -145,15 +146,5 @@ const json = ref('')
         </UButton>
       </UCard>
     </div>
-
-    <!-- Coming Soon Notice -->
-    <UAlert
-      icon="i-lucide-info"
-      color="primary"
-      variant="soft"
-      title="Tools Under Development"
-      description="These JSON tools are currently being developed and will be available soon. Check back later for updates!"
-      class="mt-8"
-    />
   </div>
 </template>

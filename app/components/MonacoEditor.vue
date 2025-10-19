@@ -14,7 +14,9 @@ const emit = defineEmits<{
 const localModelValue = ref(modelValue)
 
 const darkMode = useColorMode()
-const theme = computed(() => darkMode.value === 'dark' ? 'github-dark' : 'github-light')
+const theme = computed(() =>
+  darkMode.value === 'dark' ? 'github-dark' : 'github-light'
+)
 
 const editor = useTemplateRef('editor')
 
@@ -43,18 +45,21 @@ watch(localModelValue, () => {
   emit('update:modelValue', localModelValue.value)
 })
 
-watch(() => modelValue, () => {
-  if (modelValue !== localModelValue.value) {
-    monacoModel.setValue(modelValue)
-    console.log('modelValue changed', modelValue)
+watch(
+  () => modelValue,
+  () => {
+    if (modelValue !== localModelValue.value) {
+      monacoModel.setValue(modelValue)
+      console.log('modelValue changed', modelValue)
+    }
   }
-})
+)
 </script>
 
 <template>
   <div
     ref="editor"
     :theme
-    class="h-96 w-full"
+    class="h-96 w-full border border-gray-200 dark:border-gray-800 p-2"
   />
 </template>

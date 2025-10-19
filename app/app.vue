@@ -42,7 +42,7 @@ useSeoMeta({
         </template>
 
         <template #body>
-          <NuxtPage />
+          <NuxtPage keepalive />
         </template>
 
         <template #footer>
