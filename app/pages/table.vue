@@ -215,103 +215,125 @@ const loadSampleData = () => {
       </UCard>
     </div>
 
-    <!-- Input Section -->
-    <UCard>
-      <template #header>
-        <div class="flex items-center justify-between">
-          <h3 class="text-lg font-semibold">
-            Input Data
-          </h3>
-          <div class="flex space-x-2">
-            <UButton
-              variant="outline"
-              size="sm"
-              @click="loadSampleData"
-            >
-              Load Sample
-            </UButton>
-            <UButton
-              variant="outline"
-              size="sm"
-              @click="inputData = ''"
-            >
-              Clear
-            </UButton>
+    <!-- Input and Analysis Section -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <!-- Input Section -->
+      <UCard>
+        <template #header>
+          <div class="flex items-center justify-between">
+            <h3 class="text-lg font-semibold">
+              Input Data
+            </h3>
+            <div class="flex space-x-2">
+              <UButton
+                variant="outline"
+                size="sm"
+                @click="loadSampleData"
+              >
+                Load Sample
+              </UButton>
+              <UButton
+                variant="outline"
+                size="sm"
+                @click="inputData = ''"
+              >
+                Clear
+              </UButton>
+            </div>
           </div>
-        </div>
-      </template>
+        </template>
 
-      <div class="space-y-4">
-        <UTextarea
-          v-model="inputData"
-          :placeholder="`Enter your ${currentTool.replace('-table', '').toUpperCase()} data here...`"
-          :rows="8"
-          class="font-mono text-sm w-full"
-        />
-
-        <!-- Options -->
-        <div class="flex flex-wrap gap-4">
-          <UCheckbox
-            v-model="includeIndex"
-            label="Include row numbers"
+        <div class="space-y-4">
+          <UTextarea
+            v-model="inputData"
+            :placeholder="`Enter your ${currentTool.replace('-table', '').toUpperCase()} data here...`"
+            :rows="8"
+            class="font-mono text-sm w-full"
           />
-          <div class="flex items-center space-x-2">
-            <label class="text-sm font-medium">Max columns:</label>
-            <UInputNumber
-              v-model="maxColumns"
-              :min="1"
-              :max="50"
-              size="sm"
-              class="w-20"
+
+          <!-- Options -->
+          <div class="flex flex-wrap gap-4">
+            <UCheckbox
+              v-model="includeIndex"
+              label="Include row numbers"
             />
+            <div class="flex items-center space-x-2">
+              <label class="text-sm font-medium">Max columns:</label>
+              <UInputNumber
+                v-model="maxColumns"
+                :min="1"
+                :max="50"
+                size="sm"
+                class="w-20"
+              />
+            </div>
           </div>
         </div>
-      </div>
-    </UCard>
+      </UCard>
 
-    <!-- Table Analysis -->
-    <UCard v-if="tableAnalysis">
-      <template #header>
-        <h3 class="text-lg font-semibold">
-          Data Analysis
-        </h3>
-      </template>
+      <!-- Table Analysis -->
+      <UCard v-if="tableAnalysis">
+        <template #header>
+          <h3 class="text-lg font-semibold">
+            Data Analysis
+          </h3>
+        </template>
 
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div class="text-center">
-          <div class="text-2xl font-bold text-primary-600">
-            {{ tableAnalysis.rowCount }}
+        <div class="grid grid-cols-2 gap-4">
+          <div class="text-center">
+            <div class="text-2xl font-bold text-primary-600">
+              {{ tableAnalysis.rowCount }}
+            </div>
+            <div class="text-sm text-gray-600 dark:text-gray-400">
+              Rows
+            </div>
           </div>
-          <div class="text-sm text-gray-600 dark:text-gray-400">
-            Rows
+          <div class="text-center">
+            <div class="text-2xl font-bold text-success-600">
+              {{ tableAnalysis.columnCount }}
+            </div>
+            <div class="text-sm text-gray-600 dark:text-gray-400">
+              Columns
+            </div>
+          </div>
+          <div class="text-center">
+            <div class="text-2xl font-bold text-info-600">
+              {{ Object.keys(tableAnalysis.columnTypes).length }}
+            </div>
+            <div class="text-sm text-gray-600 dark:text-gray-400">
+              Data Types
+            </div>
+          </div>
+          <div class="text-center">
+            <div class="text-2xl font-bold text-warning-600">
+              {{ Math.round((tableAnalysis.rowCount * tableAnalysis.columnCount) / 100) }}
+            </div>
+            <div class="text-sm text-gray-600 dark:text-gray-400">
+              Complexity
+            </div>
           </div>
         </div>
-        <div class="text-center">
-          <div class="text-2xl font-bold text-success-600">
-            {{ tableAnalysis.columnCount }}
-          </div>
-          <div class="text-sm text-gray-600 dark:text-gray-400">
-            Columns
-          </div>
+      </UCard>
+
+      <!-- Placeholder for analysis when no data -->
+      <UCard v-else>
+        <template #header>
+          <h3 class="text-lg font-semibold">
+            Data Analysis
+          </h3>
+        </template>
+
+        <div class="text-center py-8">
+          <UIcon
+            name="i-lucide-bar-chart-3"
+            class="w-8 h-8 text-gray-400 mx-auto mb-2"
+          />
+          <p class="text-sm text-gray-600 dark:text-gray-400">
+            Analysis will appear here when data is loaded
+          </p>
         </div>
-        <div class="text-center">
-          <div class="text-2xl font-bold text-info-600">
-            {{ Object.keys(tableAnalysis.columnTypes).length }}
-          </div>
-          <div class="text-sm text-gray-600 dark:text-gray-400">
-            Data Types
-          </div>
-        </div>
-        <div class="text-center">
-          <div class="text-2xl font-bold text-warning-600">
-            {{ Math.round((tableAnalysis.rowCount * tableAnalysis.columnCount) / 100) }}
-          </div>
-          <div class="text-sm text-gray-600 dark:text-gray-400">
-            Complexity
-          </div>
-        </div>
-      </div>
-    </UCard>
+      </UCard>
+    </div>
 
     <!-- Table Display -->
     <UCard v-if="tableData.length > 0">

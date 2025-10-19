@@ -1,6 +1,8 @@
 import type { TableColumn } from '@nuxt/ui'
 import { parse as parseYaml } from 'yaml'
-import { parseCsv } from './csv'
+import { parseCsv, jsonToCsv } from './csv'
+import { formatJson } from './json'
+import { jsonToYaml } from './yaml'
 
 export interface TableData {
   [key: string]: unknown
@@ -13,70 +15,139 @@ export interface TableGenerationOptions {
 }
 
 /**
+ * Parse JSON data into TableData format
+ */
+function parseJsonData(jsonData: unknown): TableData[] {
+  // Parse JSON if it's a string
+  const parsedData = typeof jsonData === 'string' ? JSON.parse(jsonData) : jsonData as unknown
+
+  if (Array.isArray(parsedData)) {
+    return parsedData
+  } else if (typeof parsedData === 'object' && parsedData !== null) {
+    // Convert object to array of key-value pairs
+    return Object.entries(parsedData).map(([key, value]) => ({
+      key,
+      value: typeof value === 'object' ? JSON.stringify(value) : value
+    }))
+  } else {
+    throw new Error('Invalid JSON data format')
+  }
+}
+
+/**
+ * Parse CSV data into TableData format
+ */
+function parseCsvData(csvData: string): TableData[] {
+  const parsedData = parseCsv(csvData)
+
+  if (parsedData.length === 0) {
+    return []
+  }
+
+  return parsedData.map((row) => {
+    const tableRow: TableData = {}
+    Object.keys(row).forEach((header) => {
+      tableRow[header] = row[header] || ''
+    })
+    return tableRow
+  })
+}
+
+/**
+ * Parse YAML data into TableData format
+ */
+function parseYamlData(yamlData: string): TableData[] {
+  const parsedData = parseYaml(yamlData)
+
+  if (Array.isArray(parsedData)) {
+    return parsedData.map((item, _index) => {
+      if (typeof item === 'object' && item !== null) {
+        return item as TableData
+      }
+      return { value: item, index: _index }
+    })
+  } else if (typeof parsedData === 'object' && parsedData !== null) {
+    return Object.entries(parsedData).map(([key, value]) => ({
+      key,
+      value: typeof value === 'object' ? JSON.stringify(value) : value
+    }))
+  } else {
+    throw new Error('Invalid YAML data format')
+  }
+}
+
+/**
+ * Generate table columns and data from parsed TableData
+ */
+function generateTableFromData(
+  data: TableData[],
+  options: TableGenerationOptions = {}
+): { data: TableData[], columns: TableColumn<TableData>[] } {
+  const { includeIndex = false, maxColumns = 20 } = options
+
+  if (data.length === 0) {
+    return { data: [], columns: [] }
+  }
+
+  // Get headers and limit them
+  const firstRow = data[0]
+  if (!firstRow) {
+    return { data: [], columns: [] }
+  }
+
+  const keys = Object.keys(firstRow)
+  const limitedKeys = keys.slice(0, maxColumns)
+
+  // Generate columns
+  const columns: TableColumn<TableData>[] = limitedKeys.map(key => ({
+    accessorKey: key,
+    header: key.charAt(0).toUpperCase() + key.slice(1),
+    cell: ({ row }: { row: { getValue: (key: string) => unknown, index: number } }) => {
+      const value = row.getValue(key)
+      if (value === null || value === undefined) {
+        return '-'
+      }
+      if (typeof value === 'object') {
+        return JSON.stringify(value)
+      }
+      return String(value)
+    }
+  }))
+
+  // Add index column if requested
+  if (includeIndex) {
+    columns.unshift({
+      accessorKey: 'index',
+      header: '#',
+      cell: ({ row }: { row: { index: number } }) => row.index + 1
+    })
+  }
+
+  // Limit data to only include the selected columns
+  const limitedData = data.map((row) => {
+    const limitedRow: TableData = {}
+    limitedKeys.forEach((key) => {
+      limitedRow[key] = row[key]
+    })
+    return limitedRow
+  })
+
+  return { data: limitedData, columns }
+}
+
+/**
  * Generate table columns from JSON data
  */
 export function generateTableFromJson(
   jsonData: unknown,
   options: TableGenerationOptions = {}
 ): { data: TableData[], columns: TableColumn<TableData>[] } {
-  const { includeIndex = false, maxColumns = 20 } = options
-
-  let data: TableData[] = []
-  let columns: TableColumn<TableData>[] = []
-
   try {
-    // Parse JSON if it's a string
-    const parsedData = typeof jsonData === 'string' ? JSON.parse(jsonData) : jsonData as unknown
-
-    if (Array.isArray(parsedData)) {
-      data = parsedData
-    } else if (typeof parsedData === 'object' && parsedData !== null) {
-      // Convert object to array of key-value pairs
-      data = Object.entries(parsedData).map(([key, value]) => ({
-        key,
-        value: typeof value === 'object' ? JSON.stringify(value) : value
-      }))
-    } else {
-      throw new Error('Invalid JSON data format')
-    }
-
-    // Generate columns from the first row
-    if (data.length > 0) {
-      const firstRow = data[0]
-      if (firstRow) {
-        const keys = Object.keys(firstRow)
-        const limitedKeys = keys.slice(0, maxColumns)
-
-        columns = limitedKeys.map(key => ({
-          accessorKey: key,
-          header: key.charAt(0).toUpperCase() + key.slice(1),
-          cell: ({ row }: { row: { getValue: (key: string) => unknown, index: number } }) => {
-            const value = row.getValue(key)
-            if (value === null || value === undefined) {
-              return '-'
-            }
-            if (typeof value === 'object') {
-              return JSON.stringify(value)
-            }
-            return String(value)
-          }
-        }))
-
-        // Add index column if requested
-        if (includeIndex) {
-          columns.unshift({
-            accessorKey: 'index',
-            header: '#',
-            cell: ({ row }: { row: { index: number } }) => row.index + 1
-          })
-        }
-      }
-    }
+    const data = parseJsonData(jsonData)
+    return generateTableFromData(data, options)
   } catch (error) {
     throw new Error(`Failed to generate table from JSON: ${error instanceof Error ? error.message : 'Unknown error'}`)
   }
-
-  return { data, columns }
 }
 
 /**
@@ -86,49 +157,9 @@ export function generateTableFromCsv(
   csvData: string,
   options: TableGenerationOptions = {}
 ): { data: TableData[], columns: TableColumn<TableData>[] } {
-  const { includeIndex = false, maxColumns = 20 } = options
-
   try {
-    // Use the existing CSV parser
-    const parsedData = parseCsv(csvData)
-
-    if (parsedData.length === 0) {
-      return { data: [], columns: [] }
-    }
-
-    // Get headers and limit them
-    const headers = Object.keys(parsedData[0])
-    const limitedHeaders = headers.slice(0, maxColumns)
-
-    // Convert parsed data to TableData format
-    const data: TableData[] = parsedData.map((row) => {
-      const limitedRow: TableData = {}
-      limitedHeaders.forEach((header) => {
-        limitedRow[header] = row[header] || ''
-      })
-      return limitedRow
-    })
-
-    // Generate columns
-    const columns: TableColumn<TableData>[] = limitedHeaders.map(header => ({
-      accessorKey: header,
-      header: header.charAt(0).toUpperCase() + header.slice(1),
-      cell: ({ row }: { row: { getValue: (key: string) => unknown } }) => {
-        const value = row.getValue(header)
-        return value || '-'
-      }
-    }))
-
-    // Add index column if requested
-    if (includeIndex) {
-      columns.unshift({
-        accessorKey: 'index',
-        header: '#',
-        cell: ({ row }: { row: { index: number } }) => row.index + 1
-      })
-    }
-
-    return { data, columns }
+    const data = parseCsvData(csvData)
+    return generateTableFromData(data, options)
   } catch (error) {
     throw new Error(`Failed to generate table from CSV: ${error instanceof Error ? error.message : 'Unknown error'}`)
   }
@@ -141,65 +172,9 @@ export function generateTableFromYaml(
   yamlData: string,
   options: TableGenerationOptions = {}
 ): { data: TableData[], columns: TableColumn<TableData>[] } {
-  const { includeIndex = false, maxColumns = 20 } = options
-
   try {
-    const parsedData = parseYaml(yamlData)
-    let data: TableData[] = []
-
-    if (Array.isArray(parsedData)) {
-      data = parsedData.map((item, _index) => {
-        if (typeof item === 'object' && item !== null) {
-          return item as TableData
-        }
-        return { value: item, index: _index }
-      })
-    } else if (typeof parsedData === 'object' && parsedData !== null) {
-      data = Object.entries(parsedData).map(([key, value]) => ({
-        key,
-        value: typeof value === 'object' ? JSON.stringify(value) : value
-      }))
-    } else {
-      throw new Error('Invalid YAML data format')
-    }
-
-    // Generate columns
-    const columns: TableColumn<TableData>[] = []
-    if (data.length > 0) {
-      const firstRow = data[0]
-      if (firstRow) {
-        const keys = Object.keys(firstRow)
-        const limitedKeys = keys.slice(0, maxColumns)
-
-        limitedKeys.forEach((key) => {
-          columns.push({
-            accessorKey: key,
-            header: key.charAt(0).toUpperCase() + key.slice(1),
-            cell: ({ row }: { row: { getValue: (key: string) => unknown } }) => {
-              const value = row.getValue(key)
-              if (value === null || value === undefined) {
-                return '-'
-              }
-              if (typeof value === 'object') {
-                return JSON.stringify(value)
-              }
-              return String(value)
-            }
-          })
-        })
-
-        // Add index column if requested
-        if (includeIndex) {
-          columns.unshift({
-            accessorKey: 'index',
-            header: '#',
-            cell: ({ row }: { row: { index: number } }) => row.index + 1
-          })
-        }
-      }
-    }
-
-    return { data, columns }
+    const data = parseYamlData(yamlData)
+    return generateTableFromData(data, options)
   } catch (error) {
     throw new Error(`Failed to generate table from YAML: ${error instanceof Error ? error.message : 'Unknown error'}`)
   }
@@ -254,39 +229,21 @@ export function exportTableData(
   data: TableData[],
   format: 'json' | 'csv' | 'yaml'
 ): string {
-  switch (format) {
-    case 'json':
-      return JSON.stringify(data, null, 2)
+  try {
+    switch (format) {
+      case 'json':
+        return formatJson(JSON.stringify(data))
 
-    case 'csv': {
-      if (data.length === 0) return ''
-      const firstRow = data[0]
-      if (!firstRow) return ''
-      const headers = Object.keys(firstRow)
-      const csvRows = [
-        headers.join(','),
-        ...data.map(row =>
-          headers.map((header) => {
-            const value = row[header]
-            if (value === null || value === undefined) return ''
-            const stringValue = String(value)
-            return stringValue.includes(',') || stringValue.includes('"') || stringValue.includes('\n')
-              ? `"${stringValue.replace(/"/g, '""')}"`
-              : stringValue
-          }).join(',')
-        )
-      ]
-      return csvRows.join('\n')
+      case 'csv':
+        return jsonToCsv(JSON.stringify(data))
+
+      case 'yaml':
+        return jsonToYaml(JSON.stringify(data))
+
+      default:
+        throw new Error(`Unsupported export format: ${format}`)
     }
-
-    case 'yaml':
-      return data.map((row, _index) => {
-        const entries = Object.entries(row)
-        if (entries.length === 0) return `- {}`
-        return `- ${entries.map(([key, value]) => `${key}: ${value}`).join(', ')}`
-      }).join('\n')
-
-    default:
-      throw new Error(`Unsupported export format: ${format}`)
+  } catch (error) {
+    throw new Error(`Failed to export data: ${error instanceof Error ? error.message : 'Unknown error'}`)
   }
 }
