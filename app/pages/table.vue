@@ -323,7 +323,7 @@ const loadSampleData = () => {
           </h3>
         </template>
 
-        <div class="text-center py-8">
+        <div class="text-center">
           <UIcon
             name="i-lucide-bar-chart-3"
             class="w-8 h-8 text-gray-400 mx-auto mb-2"

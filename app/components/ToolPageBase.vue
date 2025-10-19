@@ -106,7 +106,7 @@ defineExpose({
 </script>
 
 <template>
-  <div class="px-4 py-8">
+  <div class="p-4">
     <div class="mb-8">
       <div class="flex items-center space-x-3 mb-4">
         <UIcon

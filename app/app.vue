@@ -33,8 +33,11 @@ useSeoMeta({
       <UDashboardPanel>
         <template #header>
           <UDashboardNavbar title="Programming Tools">
-            <template #trailing>
-              <UColorModeButton color="primary" />
+            <template #right>
+              <UButton href="https://buymeacoffee.com/kmilogp">
+                <UIcon name="i-lucide-coffee" />
+                Buy me a coffee
+              </UButton>
             </template>
           </UDashboardNavbar>
         </template>

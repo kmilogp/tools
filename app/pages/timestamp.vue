@@ -12,7 +12,7 @@ useHead({
 
 <template>
   <div class="min-h-screen bg-gray-50 dark:bg-gray-900">
-    <div class="container mx-auto px-4 py-8">
+    <div class="container mx-auto p-4">
       <div class="mb-8">
         <div class="flex items-center gap-3 mb-4">
           <UIcon
