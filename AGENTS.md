@@ -3,10 +3,10 @@
 This is a website full of tools for daily usage in programming world. Such tools are useful for several tasks such as:
 
 **JSON**
-- [ ] JSON formatting
-- [ ] JSON escaping
-- [ ] JSON unescaping
-- [ ] JSON minification
+- [x] JSON formatting
+- [x] JSON escaping
+- [x] JSON unescaping
+- [x] JSON minification
 
 **Base64**
 - [ ] Base64 encoding
