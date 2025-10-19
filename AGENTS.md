@@ -36,17 +36,17 @@ This is a website full of tools for daily usage in programming world. Such tools
 - [x] Timestamp conversion
 - [x] Timestamp translation
 
-**Charts**
-- [ ] Chart generation from JSON
-- [ ] Chart generation from CSV
-- [ ] Chart generation from YAML
+**Table**
+- [x] Table generation from JSON
+- [x] Table generation from CSV
+- [x] Table generation from YAML
 
 ## Tools of the repository
 - Repository is mainly based on Nuxt 4, TypeScript and Vue 3. Most of the tools will be written in TypeScript.
 - For running the project you will use Bun.
 
 ## How to develop a new tool
-- All the tools will be grouped by a category such as JSON, Base64, Timestamp, YAML, CSV, Charts.
+- All the tools will be grouped by a category such as JSON, Base64, Timestamp, YAML, CSV, Table.
 - Each category will have it's own page in the website.
 - Every time a tool is developed, it needs to be tested. For testing we will use Nuxt Test Utils.
 - When the development of a tool is finished it needs to be marked as completed in the AGENTS.md file.
@@ -60,7 +60,7 @@ This is a website full of tools for daily usage in programming world. Such tools
 
 ## Website layout
 - The website will have a sidebar with the categories of the tools.
-- Each category will use a Link component from Nuxt UI,  and it will be used to navigate to the category page.
+- Each category will use a Link component from Nuxt UI, and it will be used to navigate to the category page.
 
 ## Code rules
 - Do not use error negation comments like // @ts-ignore or // @ts-expect-error unless you are allowed to do so.

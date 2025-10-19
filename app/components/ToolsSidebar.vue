@@ -31,6 +31,11 @@ const toolCategories: NavigationMenuItem[] = [
     label: 'Charts',
     icon: 'i-lucide-bar-chart-3',
     to: '/charts'
+  },
+  {
+    label: 'Table',
+    icon: 'i-lucide-table',
+    to: '/table'
   }
 ]
 </script>
