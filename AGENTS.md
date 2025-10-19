@@ -28,12 +28,13 @@ This is a website full of tools for daily usage in programming world. Such tools
 - [x] JSON to YAML conversion
 
 **CSV**
-- [ ] CSV validation
-- [ ] CSV to JSON conversion
-- [ ] JSON to CSV conversion
-- [ ] CSV to JSON conversion
-- [ ] CSV to YAML conversion
-- [ ] YAML to CSV conversion
+- [x] CSV validation
+- [x] CSV to JSON conversion
+- [x] JSON to CSV conversion
+- [x] CSV to YAML conversion
+- [x] YAML to CSV conversion
+- [x] CSV formatting
+- [x] CSV analysis
 
 **Charts**
 - [ ] Chart generation from JSON
