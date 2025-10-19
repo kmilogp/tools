@@ -16,6 +16,9 @@ useHead({
   ]
 })
 
+const delimiter = ref(',')
+const computedDelimiter = computed(() => delimiter.value || ',')
+
 const tools = [
   {
     id: 'validator',
@@ -24,13 +27,14 @@ const tools = [
     icon: 'i-lucide-check-circle',
     color: 'success' as const,
     function: (input: string) => {
-      const validation = validateCsv(input)
+      const validation = validateCsv(input, computedDelimiter.value)
       return JSON.stringify({
         isValid: validation.isValid,
         rowCount: validation.rowCount,
         columnCount: validation.columnCount,
         headers: validation.headers,
-        errors: validation.errors
+        errors: validation.errors,
+        delimiter: computedDelimiter.value
       }, null, 2)
     }
   },
@@ -40,7 +44,9 @@ const tools = [
     description: 'Format and beautify CSV data with proper structure.',
     icon: 'i-lucide-align-left',
     color: 'primary' as const,
-    function: formatCsv
+    function: (input: string) => {
+      return formatCsv(input, computedDelimiter.value)
+    }
   },
   {
     id: 'csv-to-json',
@@ -48,7 +54,9 @@ const tools = [
     description: 'Convert CSV data to JSON format.',
     icon: 'i-lucide-file-code',
     color: 'primary' as const,
-    function: csvToJson
+    function: (input: string) => {
+      return csvToJson(input, computedDelimiter.value)
+    }
   },
   {
     id: 'json-to-csv',
@@ -56,7 +64,9 @@ const tools = [
     description: 'Convert JSON data to CSV format.',
     icon: 'i-lucide-table',
     color: 'error' as const,
-    function: jsonToCsv
+    function: (input: string) => {
+      return jsonToCsv(input, computedDelimiter.value)
+    }
   },
   {
     id: 'csv-to-yaml',
@@ -64,7 +74,9 @@ const tools = [
     description: 'Convert CSV data to YAML format.',
     icon: 'i-lucide-file-text',
     color: 'secondary' as const,
-    function: csvToYaml
+    function: (input: string) => {
+      return csvToYaml(input, computedDelimiter.value)
+    }
   },
   {
     id: 'yaml-to-csv',
@@ -72,7 +84,9 @@ const tools = [
     description: 'Convert YAML data to CSV format.',
     icon: 'i-lucide-table-2',
     color: 'warning' as const,
-    function: yamlToCsv
+    function: (input: string) => {
+      return yamlToCsv(input, computedDelimiter.value)
+    }
   },
   {
     id: 'analyzer',
@@ -81,7 +95,7 @@ const tools = [
     icon: 'i-lucide-search',
     color: 'info' as const,
     function: (input: string) => {
-      const info = getCsvInfo(input)
+      const info = getCsvInfo(input, computedDelimiter.value)
       return JSON.stringify(info, null, 2)
     }
   }
@@ -100,5 +114,13 @@ const tools = [
     output-language="json"
     input-placeholder="Enter CSV data here..."
     output-placeholder="Output will appear here..."
-  />
+  >
+    <template #parameters>
+      Delimiter:
+      <UInput
+        v-model="delimiter"
+        placeholder="Enter delimiter (e.g., , ; | \t)"
+      />
+    </template>
+  </ToolPageBase>
 </template>

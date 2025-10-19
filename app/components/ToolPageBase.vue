@@ -198,52 +198,57 @@ defineExpose({
       </div>
     </div>
 
-    <div class="flex flex-wrap gap-4 mt-6">
-      <UButton
-        :disabled="!input.trim()"
-        color="primary"
-        @click="executeSelectedTool"
-      >
-        <UIcon
-          name="i-lucide-play"
-          class="w-4 h-4 mr-2"
-        />
-        Execute Tool
-      </UButton>
+    <div class="flex flex-wrap gap-4 mt-6 justify-between items-center">
+      <div class="space-x-4">
+        <UButton
+          :disabled="!input.trim()"
+          color="primary"
+          @click="executeSelectedTool"
+        >
+          <UIcon
+            name="i-lucide-play"
+            class="w-4 h-4 mr-2"
+          />
+          Execute Tool
+        </UButton>
 
-      <UButton
-        color="warning"
-        @click="switchInputAndOutput"
-      >
-        <UIcon
-          name="i-lucide-arrow-left-right"
-          class="w-4 h-4 mr-2"
-        />
-        Switch Input and Output
-      </UButton>
+        <UButton
+          color="warning"
+          @click="switchInputAndOutput"
+        >
+          <UIcon
+            name="i-lucide-arrow-left-right"
+            class="w-4 h-4 mr-2"
+          />
+          Switch Input and Output
+        </UButton>
 
-      <UButton
-        color="info"
-        @click="copyOutput"
-      >
-        <UIcon
-          name="i-lucide-copy"
-          class="w-4 h-4 mr-2"
-        />
-        Copy Output
-      </UButton>
+        <UButton
+          color="info"
+          @click="copyOutput"
+        >
+          <UIcon
+            name="i-lucide-copy"
+            class="w-4 h-4 mr-2"
+          />
+          Copy Output
+        </UButton>
 
-      <UButton
-        color="neutral"
-        variant="soft"
-        @click="clearAll"
-      >
-        <UIcon
-          name="i-lucide-refresh-cw"
-          class="w-4 h-4 mr-2"
-        />
-        Clear All
-      </UButton>
+        <UButton
+          color="neutral"
+          variant="soft"
+          @click="clearAll"
+        >
+          <UIcon
+            name="i-lucide-refresh-cw"
+            class="w-4 h-4 mr-2"
+          />
+          Clear All
+        </UButton>
+      </div>
+      <div>
+        <slot name="parameters" />
+      </div>
     </div>
   </div>
 </template>
