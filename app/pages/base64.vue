@@ -46,7 +46,7 @@ const tools = [
     id: 'decoder-url',
     name: 'Base64 URL Decoder',
     description: 'Decode URL-safe Base64 strings to original text.',
-    icon: 'i-lucide-link-external',
+    icon: 'i-lucide-external-link',
     color: 'info' as const,
     function: decodeBase64Url
   },
