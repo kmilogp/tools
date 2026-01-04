@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+import { describe, it, expect } from 'vitest'
 import { decodeJwt, encodeJwt, formatDecodedJwt, validateJwtFormat, type JwtDecoded } from './jwt'
 
 describe('JWT Tools', () => {
@@ -41,7 +41,7 @@ describe('JWT Tools', () => {
         }
       }
       const header = { alg: 'none', typ: 'JWT' }
-      
+
       // We'll encode it first, then decode
       const jwt = await encodeJwt(header, complexPayload)
       const decoded = decodeJwt(jwt)
@@ -70,7 +70,7 @@ describe('JWT Tools', () => {
       const invalidHeaderB64 = btoa('invalid json').replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '')
       const validPayloadB64 = btoa('{"sub":"123"}').replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '')
       const invalidJwt = `${invalidHeaderB64}.${validPayloadB64}.signature`
-      
+
       expect(() => decodeJwt(invalidJwt)).toThrow('Failed to decode JWT')
     })
 
@@ -188,7 +188,7 @@ describe('JWT Tools', () => {
       // This should not throw, but if JSON.stringify fails, it would
       const header = { alg: 'HS256', typ: 'JWT' }
       const payload = { sub: '123' }
-      
+
       // Should not throw
       await expect(encodeJwt(header, payload, 'secret')).resolves.toBeTruthy()
     })
@@ -228,7 +228,7 @@ describe('JWT Tools', () => {
       }
 
       const formatted = formatDecodedJwt(decoded)
-      
+
       // Should contain newlines (from indentation)
       expect(formatted).toContain('\n')
       // Should be valid JSON
@@ -268,7 +268,7 @@ describe('JWT Tools', () => {
     it('should encode and decode round-trip correctly', async () => {
       const header = { alg: 'HS256', typ: 'JWT' }
       const payload = { sub: 'user123', name: 'Test User', exp: 1234567890 }
-      
+
       const jwt = await encodeJwt(header, payload, 'my-secret')
       const decoded = decodeJwt(jwt)
 
@@ -298,4 +298,3 @@ describe('JWT Tools', () => {
     })
   })
 })
-

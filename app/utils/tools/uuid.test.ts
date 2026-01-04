@@ -1,11 +1,11 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { generateUuidV4, generateUuidV7, generateMultipleUuids } from './uuid'
 
 describe('UUID Tools', () => {
   describe('generateUuidV4', () => {
     it('should generate a valid UUID v4', () => {
       const uuid = generateUuidV4()
-      
+
       // UUID v4 format: xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx
       // where x is any hexadecimal digit and y is one of 8, 9, A, or B
       expect(uuid).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i)
@@ -15,7 +15,7 @@ describe('UUID Tools', () => {
       const uuid1 = generateUuidV4()
       const uuid2 = generateUuidV4()
       const uuid3 = generateUuidV4()
-      
+
       expect(uuid1).not.toBe(uuid2)
       expect(uuid2).not.toBe(uuid3)
       expect(uuid1).not.toBe(uuid3)
@@ -37,9 +37,9 @@ describe('UUID Tools', () => {
       const originalCrypto = global.crypto
       // @ts-expect-error - Testing error case
       global.crypto = { randomUUID: undefined }
-      
+
       expect(() => generateUuidV4()).toThrow('crypto.randomUUID() is not available in this environment')
-      
+
       global.crypto = originalCrypto
     })
   })
@@ -47,7 +47,7 @@ describe('UUID Tools', () => {
   describe('generateUuidV7', () => {
     it('should generate a valid UUID v7', () => {
       const uuid = generateUuidV7()
-      
+
       // UUID v7 format: xxxxxxxx-xxxx-7xxx-yxxx-xxxxxxxxxxxx
       // where x is any hexadecimal digit and y is one of 8, 9, A, or B
       // Version 7 is at position 14, variant is in the third group
@@ -69,19 +69,19 @@ describe('UUID Tools', () => {
 
     it('should generate time-ordered UUIDs (later timestamps produce larger UUIDs)', () => {
       const uuid1 = generateUuidV7()
-      
+
       // Wait a small amount to ensure different timestamp
       const start = Date.now()
       while (Date.now() === start) {
         // Wait for next millisecond
       }
-      
+
       const uuid2 = generateUuidV7()
-      
+
       // Extract timestamp parts (first 12 hex characters)
       const timestamp1 = parseInt(uuid1.slice(0, 8) + uuid1.slice(9, 13), 16)
       const timestamp2 = parseInt(uuid2.slice(0, 8) + uuid2.slice(9, 13), 16)
-      
+
       // UUID v7 should be time-ordered, so uuid2 should be >= uuid1
       expect(timestamp2).toBeGreaterThanOrEqual(timestamp1)
     })
@@ -90,13 +90,13 @@ describe('UUID Tools', () => {
       // Mock Date.now to return same timestamp
       const mockTimestamp = 1234567890123
       vi.spyOn(Date, 'now').mockReturnValue(mockTimestamp)
-      
+
       const uuid1 = generateUuidV7()
       const uuid2 = generateUuidV7()
-      
+
       // Even with same timestamp, random parts should make them different
       expect(uuid1).not.toBe(uuid2)
-      
+
       vi.restoreAllMocks()
     })
 
@@ -104,9 +104,9 @@ describe('UUID Tools', () => {
       const originalCrypto = global.crypto
       // @ts-expect-error - Testing error case
       global.crypto = { getRandomValues: undefined }
-      
+
       expect(() => generateUuidV7()).toThrow('crypto.getRandomValues() is not available in this environment')
-      
+
       global.crypto = originalCrypto
     })
 
@@ -128,9 +128,9 @@ describe('UUID Tools', () => {
   describe('generateMultipleUuids', () => {
     it('should generate multiple UUID v4', () => {
       const uuids = generateMultipleUuids('v4', 5)
-      
+
       expect(uuids).toHaveLength(5)
-      uuids.forEach(uuid => {
+      uuids.forEach((uuid) => {
         expect(uuid).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i)
         expect(uuid[14]).toBe('4')
       })
@@ -138,9 +138,9 @@ describe('UUID Tools', () => {
 
     it('should generate multiple UUID v7', () => {
       const uuids = generateMultipleUuids('v7', 5)
-      
+
       expect(uuids).toHaveLength(5)
-      uuids.forEach(uuid => {
+      uuids.forEach((uuid) => {
         expect(uuid).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[0-9a-f]{4}-[0-9a-f]{12}$/i)
         expect(uuid[14]).toBe('7')
       })
@@ -149,7 +149,7 @@ describe('UUID Tools', () => {
     it('should generate unique UUIDs', () => {
       const uuids = generateMultipleUuids('v4', 10)
       const uniqueUuids = new Set(uuids)
-      
+
       expect(uniqueUuids.size).toBe(10)
     })
 
@@ -161,13 +161,12 @@ describe('UUID Tools', () => {
     it('should handle large count', () => {
       const uuids = generateMultipleUuids('v4', 100)
       expect(uuids).toHaveLength(100)
-      
+
       // All should be valid UUIDs
-      uuids.forEach(uuid => {
+      uuids.forEach((uuid) => {
         expect(uuid.length).toBe(36)
         expect(uuid[14]).toBe('4')
       })
     })
   })
 })
-
