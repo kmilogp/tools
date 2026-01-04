@@ -65,6 +65,10 @@ export function decodeJwt(jwt: string): JwtDecoded {
 
   const [headerB64, payloadB64, signatureB64] = parts
 
+  if (!headerB64 || !payloadB64 || signatureB64 === undefined) {
+    throw new Error('Invalid JWT format. Missing header, payload, or signature')
+  }
+
   try {
     const headerJson = base64UrlDecode(headerB64)
     const payloadJson = base64UrlDecode(payloadB64)
@@ -100,8 +104,7 @@ export function decodeJwt(jwt: string): JwtDecoded {
 export async function encodeJwt(
   header: Record<string, unknown>,
   payload: Record<string, unknown>,
-  secret?: string,
-  algorithm: string = 'none'
+  secret?: string
 ): Promise<string> {
   try {
     const headerJson = JSON.stringify(header)
@@ -145,7 +148,10 @@ export async function encodeJwt(
     const signatureBytes = new Uint8Array(signature)
     let binary = ''
     for (let i = 0; i < signatureBytes.length; i++) {
-      binary += String.fromCharCode(signatureBytes[i])
+      const byte = signatureBytes[i]
+      if (byte !== undefined) {
+        binary += String.fromCharCode(byte)
+      }
     }
     const signatureB64 = btoa(binary)
       .replace(/\+/g, '-')
