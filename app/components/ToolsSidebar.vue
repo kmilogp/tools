@@ -31,6 +31,16 @@ const toolCategories: NavigationMenuItem[] = [
     label: 'Table',
     icon: 'i-lucide-table',
     to: '/table'
+  },
+  {
+    label: 'UUID',
+    icon: 'i-lucide-fingerprint',
+    to: '/uuid'
+  },
+  {
+    label: 'JWT',
+    icon: 'i-lucide-key',
+    to: '/jwt'
   }
 ]
 

@@ -2,9 +2,10 @@
 import { init } from 'modern-monaco'
 import type { editor as monacoEditorType } from 'modern-monaco/editor-core'
 
-const { lang = 'json', modelValue = '' } = defineProps<{
+const { lang = 'json', modelValue = '', minHeight } = defineProps<{
   lang?: string
   modelValue?: string
+  minHeight?: number
 }>()
 
 const emit = defineEmits<{
@@ -27,6 +28,8 @@ const monaco = await init({
 let monacoEditor: monacoEditorType.IStandaloneCodeEditor
 let monacoModel: monacoEditorType.ITextModel
 
+let resizeObserver: ResizeObserver | null = null
+
 onMounted(async () => {
   monacoEditor = monaco.editor.create(editor.value as HTMLElement)
   monacoModel = monaco.editor.createModel(localModelValue.value, lang)
@@ -35,6 +38,24 @@ onMounted(async () => {
   monacoEditor.onDidChangeModelContent(() => {
     localModelValue.value = monacoEditor.getValue()
   })
+
+  // Handle resize
+  resizeObserver = new ResizeObserver(() => {
+    monacoEditor.layout()
+  })
+  resizeObserver.observe(editor.value as HTMLElement)
+})
+
+onUnmounted(() => {
+  if (resizeObserver) {
+    resizeObserver.disconnect()
+  }
+  if (monacoEditor) {
+    monacoEditor.dispose()
+  }
+  if (monacoModel) {
+    monacoModel.dispose()
+  }
 })
 
 watch(theme, () => {
@@ -60,6 +81,10 @@ watch(
   <div
     ref="editor"
     :theme
-    class="h-96 w-full border border-gray-200 dark:border-gray-800 p-2"
+    :class="[
+      'w-full border border-gray-200 dark:border-gray-800 p-2',
+      minHeight ? '' : 'h-full'
+    ]"
+    :style="minHeight ? `height: ${minHeight}px; min-height: ${minHeight}px;` : ''"
   />
 </template>

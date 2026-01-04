@@ -106,144 +106,135 @@ defineExpose({
 </script>
 
 <template>
-  <div class="p-4">
-    <div class="mb-8">
-      <div class="flex items-center space-x-3 mb-4">
+  <div
+    class="p-2 flex flex-col"
+    style="height: calc(100vh - 200px); min-height: 600px;"
+  >
+    <div class="mb-2 flex-shrink-0">
+      <div class="flex items-center space-x-2 mb-1">
         <UIcon
           :name="icon"
-          :class="`w-8 h-8 ${iconColor}`"
+          :class="`w-5 h-5 ${iconColor}`"
         />
-        <h1 class="text-3xl font-bold text-gray-900 dark:text-white">
+        <h1 class="text-xl font-bold text-gray-900 dark:text-white">
           {{ title }}
         </h1>
       </div>
-      <p class="text-lg text-gray-600 dark:text-gray-300">
+      <p class="text-xs text-gray-600 dark:text-gray-300">
         {{ description }}
       </p>
     </div>
 
-    <div class="mb-6">
-      <UCard>
-        <template #header>
-          <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-            Select Tool
-          </h3>
-        </template>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
-          <UButton
-            v-for="tool in tools"
-            :key="tool.id"
-            :color="selectedTool === tool.id ? tool.color : 'neutral'"
-            :variant="selectedTool === tool.id ? 'solid' : 'soft'"
-            class="justify-start h-auto p-4"
-            @click="selectedTool = tool.id"
-          >
-            <div class="flex items-center space-x-3 w-full">
-              <UIcon
-                :name="tool.icon"
-                class="w-5 h-5"
-              />
-              <div class="text-left">
-                <div class="font-medium">
-                  {{ tool.name }}
-                </div>
-                <div class="text-xs opacity-75">
-                  {{ tool.description }}
-                </div>
-              </div>
-            </div>
-          </UButton>
-        </div>
-      </UCard>
+    <div class="mb-2 flex-shrink-0">
+      <div class="flex flex-wrap gap-1">
+        <UButton
+          v-for="tool in tools"
+          :key="tool.id"
+          :color="selectedTool === tool.id ? tool.color : 'neutral'"
+          :variant="selectedTool === tool.id ? 'solid' : 'soft'"
+          size="xs"
+          class="text-xs"
+          @click="selectedTool = tool.id"
+        >
+          <UIcon
+            :name="tool.icon"
+            class="w-3 h-3 mr-1"
+          />
+          {{ tool.name }}
+        </UButton>
+      </div>
     </div>
 
     <UAlert
       v-if="errorMessage"
       color="error"
       variant="soft"
-      class="mb-6"
+      class="mb-2 flex-shrink-0 text-xs"
       :title="errorMessage"
       :description="'Please check your input and try again.'"
     />
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div>
-        <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 flex-grow min-h-0">
+      <div class="flex flex-col min-h-0">
+        <h3 class="text-sm font-semibold text-gray-900 dark:text-white mb-1">
           Input
         </h3>
-        <ClientOnly>
-          <MonacoEditor
-            v-model="input"
-            :lang="inputLanguage"
-            class="border rounded-lg"
-            :placeholder="inputPlaceholder"
-          />
-        </ClientOnly>
+        <div class="flex-grow min-h-0">
+          <ClientOnly>
+            <MonacoEditor
+              v-model="input"
+              :lang="inputLanguage"
+              class="border rounded-lg h-full"
+              :placeholder="inputPlaceholder"
+            />
+          </ClientOnly>
+        </div>
       </div>
 
-      <div>
-        <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+      <div class="flex flex-col min-h-0">
+        <h3 class="text-sm font-semibold text-gray-900 dark:text-white mb-1">
           Output
         </h3>
-        <ClientOnly>
-          <MonacoEditor
-            v-model="output"
-            :lang="outputLanguage"
-            class="border rounded-lg"
-            :read-only="true"
-            :placeholder="outputPlaceholder"
-          />
-        </ClientOnly>
+        <div class="flex-grow min-h-0">
+          <ClientOnly>
+            <MonacoEditor
+              v-model="output"
+              :lang="outputLanguage"
+              class="border rounded-lg h-full"
+              :read-only="true"
+              :placeholder="outputPlaceholder"
+            />
+          </ClientOnly>
+        </div>
       </div>
     </div>
 
-    <div class="flex flex-wrap gap-4 mt-6 justify-between items-center">
-      <div class="flex flex-wrap gap-2">
+    <div class="flex flex-wrap gap-1 mt-2 justify-between items-center flex-shrink-0">
+      <div class="flex flex-wrap gap-1">
         <UButton
           :disabled="!input.trim()"
           color="primary"
+          size="xs"
           @click="executeSelectedTool"
         >
           <UIcon
             name="i-lucide-play"
-            class="w-4 h-4 mr-2"
+            class="w-3 h-3"
           />
-          Execute Tool
         </UButton>
 
         <UButton
           color="warning"
+          size="xs"
           @click="switchInputAndOutput"
         >
           <UIcon
             name="i-lucide-arrow-left-right"
-            class="w-4 h-4 mr-2"
+            class="w-3 h-3"
           />
-          Switch Input and Output
         </UButton>
 
         <UButton
           color="info"
+          size="xs"
           @click="copyOutput"
         >
           <UIcon
             name="i-lucide-copy"
-            class="w-4 h-4 mr-2"
+            class="w-3 h-3"
           />
-          Copy Output
         </UButton>
 
         <UButton
           color="neutral"
           variant="soft"
+          size="xs"
           @click="clearAll"
         >
           <UIcon
             name="i-lucide-refresh-cw"
-            class="w-4 h-4 mr-2"
+            class="w-3 h-3"
           />
-          Clear All
         </UButton>
       </div>
       <div>

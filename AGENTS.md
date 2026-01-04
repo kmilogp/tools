@@ -41,6 +41,10 @@ This is a website full of tools for daily usage in programming world. Such tools
 - [x] Table generation from CSV
 - [x] Table generation from YAML
 
+**JWT**
+- [x] JWT decoding
+- [x] JWT encoding
+
 ## Tools of the repository
 - Repository is mainly based on Nuxt 4, TypeScript and Vue 3. Most of the tools will be written in TypeScript.
 - For running the project you will use Bun.

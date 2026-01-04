@@ -41,6 +41,20 @@ const toolCategories = [
     icon: 'i-lucide-table',
     description: 'Table generation from JSON, CSV, and YAML data',
     color: 'indigo'
+  },
+  {
+    name: 'UUID',
+    path: '/uuid',
+    icon: 'i-lucide-fingerprint',
+    description: 'Generate UUID v4 and v7 using browser crypto utilities',
+    color: 'purple'
+  },
+  {
+    name: 'JWT',
+    path: '/jwt',
+    icon: 'i-lucide-key',
+    description: 'Decode and encode JWT tokens with support for signed and unsigned tokens',
+    color: 'blue'
   }
 ]
 </script>
