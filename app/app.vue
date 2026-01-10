@@ -49,7 +49,9 @@ useSeoMeta({
         <template #footer>
           <UFooter>
             <p class="text-sm text-muted">
-              Built with <UIcon name="i-logos-nuxt-icon" /> and <UIcon
+              Built with
+              <UIcon name="i-logos-nuxt-icon" /> and
+              <UIcon
                 name="i-lucide-heart"
                 class="text-red-500 text-md"
               /> • © {{ new Date().getFullYear() }}
