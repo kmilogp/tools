@@ -17,7 +17,7 @@
   "dependencies": {
     "@iconify-json/lucide": "^1.2.86",
     "@iconify-json/simple-icons": "^1.2.67",
-    "@nuxt/test-utils": "3.19.2",
+    "@nuxt/test-utils": "3.23.0",
     "@nuxt/ui": "^4.4.0",
     "@vueuse/nuxt": "13.9.0",
     "modern-monaco": "^0.3.7",
