@@ -9,7 +9,6 @@ import {
 } from './timestamp'
 
 describe('timestamp utilities', () => {
-
   describe('timestampToIso', () => {
     it('should convert timestamp to ISO string', () => {
       const timestamp = new Date('2023-12-21T10:30:00.000Z').getTime()
