@@ -47,6 +47,6 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ env.REGISTRY }}/tools:${{ steps.package-version.outputs.version }}
+          tags: ${{ env.REGISTRY }}/tools:${{ steps.package-version.outputs.version }},${{ env.REGISTRY }}/tools:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
