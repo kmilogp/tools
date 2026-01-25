@@ -19,8 +19,6 @@ useSeoMeta({
   description,
   ogTitle: title,
   ogDescription: description,
-  ogImage: 'https://ui.nuxt.com/assets/templates/nuxt/starter-light.png',
-  twitterImage: 'https://ui.nuxt.com/assets/templates/nuxt/starter-light.png',
   twitterCard: 'summary_large_image'
 })
 </script>
@@ -34,6 +32,15 @@ useSeoMeta({
         <template #header>
           <UDashboardNavbar title="Programming Tools">
             <template #right>
+              <UButton
+                color="primary"
+                href="https://github.com/kmilogp8496/tools"
+                leading-icon="i-logos-github-icon"
+              >
+                <span class="hidden lg:inline-block">
+                  Tools are now open source!
+                </span>
+              </UButton>
               <UButton href="https://buymeacoffee.com/kmilogp">
                 <UIcon name="i-lucide-coffee" />
                 Buy me a coffee
