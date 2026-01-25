@@ -34,13 +34,11 @@ describe('UUID Tools', () => {
     })
 
     it('should throw error when crypto.randomUUID is not available', () => {
-      const originalCrypto = globalThis.crypto
-      // @ts-expect-error - Testing error case
-      globalThis.crypto = { randomUUID: undefined }
+      vi.stubGlobal('crypto', { randomUUID: undefined })
 
       expect(() => generateUuidV4()).toThrow('crypto.randomUUID() is not available in this environment')
 
-      globalThis.crypto = originalCrypto
+      vi.unstubAllGlobals()
     })
   })
 
@@ -101,13 +99,11 @@ describe('UUID Tools', () => {
     })
 
     it('should throw error when crypto.getRandomValues is not available', () => {
-      const originalCrypto = globalThis.crypto
-      // @ts-expect-error - Testing error case
-      globalThis.crypto = { getRandomValues: undefined }
+      vi.stubGlobal('crypto', { getRandomValues: undefined })
 
       expect(() => generateUuidV7()).toThrow('crypto.getRandomValues() is not available in this environment')
 
-      globalThis.crypto = originalCrypto
+      vi.unstubAllGlobals()
     })
 
     it('should have correct variant bits', () => {

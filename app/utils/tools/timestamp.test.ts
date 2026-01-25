@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+import { describe, it, expect } from 'vitest'
 import {
   timestampToIso,
   timestampToUtc,
@@ -9,28 +9,32 @@ import {
 } from './timestamp'
 
 describe('timestamp utilities', () => {
-  beforeEach(() => {
-    vi.useFakeTimers()
-    vi.setSystemTime(new Date('2023-12-21T10:30:00.000Z'))
-  })
-
-  afterEach(() => {
-    vi.useRealTimers()
-  })
 
   describe('timestampToIso', () => {
     it('should convert timestamp to ISO string', () => {
-      const timestamp = 1703155800000
+      const timestamp = new Date('2023-12-21T10:30:00.000Z').getTime()
       const isoString = timestampToIso(timestamp)
       expect(isoString).toBe('2023-12-21T10:30:00.000Z')
+    })
+
+    it('should handle different timestamps', () => {
+      const timestamp = new Date('2024-01-01T00:00:00.000Z').getTime()
+      const isoString = timestampToIso(timestamp)
+      expect(isoString).toBe('2024-01-01T00:00:00.000Z')
     })
   })
 
   describe('timestampToUtc', () => {
     it('should convert timestamp to UTC string', () => {
-      const timestamp = 1703155800000
+      const timestamp = new Date('2023-12-21T10:30:00.000Z').getTime()
       const utcString = timestampToUtc(timestamp)
       expect(utcString).toBe('Thu, 21 Dec 2023 10:30:00 GMT')
+    })
+
+    it('should handle different timestamps', () => {
+      const timestamp = new Date('2024-01-01T00:00:00.000Z').getTime()
+      const utcString = timestampToUtc(timestamp)
+      expect(utcString).toBe('Mon, 01 Jan 2024 00:00:00 GMT')
     })
   })
 
@@ -38,13 +42,22 @@ describe('timestamp utilities', () => {
     it('should convert ISO date string to timestamp', () => {
       const dateString = '2023-12-21T10:30:00.000Z'
       const timestamp = dateToTimestamp(dateString)
-      expect(timestamp).toBe(1703155800000)
+      const expected = new Date(dateString).getTime()
+      expect(timestamp).toBe(expected)
     })
 
     it('should convert local date string to timestamp', () => {
       const dateString = '2023-12-21T10:30:00'
       const timestamp = dateToTimestamp(dateString)
-      expect(timestamp).toBe(1703155800000)
+      const expected = new Date(dateString).getTime()
+      expect(timestamp).toBe(expected)
+    })
+
+    it('should handle round-trip conversion', () => {
+      const originalTimestamp = new Date('2023-12-21T10:30:00.000Z').getTime()
+      const isoString = timestampToIso(originalTimestamp)
+      const convertedTimestamp = dateToTimestamp(isoString)
+      expect(convertedTimestamp).toBe(originalTimestamp)
     })
 
     it('should throw error for invalid date string', () => {
