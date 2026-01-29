@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { formatJson, minifyJson, escapeJson, unescapeJson, validateJson } from './json'
+import { formatJson, minifyJson, escapeJson, unescapeJson, minifyAndEscapeJson, validateJson } from './json'
 
 describe('JSON Tools', () => {
   describe('formatJson', () => {
@@ -78,6 +78,35 @@ describe('JSON Tools', () => {
       const input = ''
       const expected = ''
       expect(escapeJson(input)).toBe(expected)
+    })
+  })
+
+  describe('minifyAndEscapeJson', () => {
+    it('should minify and escape JSON', () => {
+      const input = `{
+  "name": "John",
+  "age": 30,
+  "city": "New York"
+}`
+      const expected = '{\\"name\\":\\"John\\",\\"age\\":30,\\"city\\":\\"New York\\"}'
+      expect(minifyAndEscapeJson(input)).toBe(expected)
+    })
+
+    it('should handle already minified JSON', () => {
+      const input = '{"name":"John","age":30}'
+      const expected = '{\\"name\\":\\"John\\",\\"age\\":30}'
+      expect(minifyAndEscapeJson(input)).toBe(expected)
+    })
+
+    it('should throw error for invalid JSON', () => {
+      const input = '{"name":"John","age":30,}'
+      expect(() => minifyAndEscapeJson(input)).toThrow('Invalid JSON')
+    })
+
+    it('should handle nested objects', () => {
+      const input = '{"user":{"name":"John"}}'
+      const expected = '{\\"user\\":{\\"name\\":\\"John\\"}}'
+      expect(minifyAndEscapeJson(input)).toBe(expected)
     })
   })
 

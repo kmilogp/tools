@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { formatJson, minifyJson, escapeJson, unescapeJson, validateJson } from '~/utils/tools/json'
+import { formatJson, minifyJson, escapeJson, unescapeJson, minifyAndEscapeJson, validateJson } from '~/utils/tools/json'
 
 useHead({
   title: 'JSON Tools - Programming Tools',
@@ -37,6 +37,14 @@ const tools = [
     function: escapeJson
   },
   {
+    id: 'minify-escape',
+    name: 'JSON Miniscaper',
+    description: 'Minify JSON and escape it for safe embedding in strings.',
+    icon: 'i-fa7-solid-compress-arrows-alt',
+    color: 'error' as const,
+    function: minifyAndEscapeJson
+  },
+  {
     id: 'unescaper',
     name: 'JSON Unescaper',
     description: 'Unescape JSON strings by parsing escaped characters.',
@@ -61,7 +69,7 @@ const tools = [
 <template>
   <ToolPageBase
     title="JSON Tools"
-    description="Format, minify, escape, unescape, and validate JSON data with our comprehensive set of tools."
+    description="Format, minify, escape, unescape, minify & escape, and validate JSON data with our comprehensive set of tools."
     icon="i-lucide-file-code"
     icon-color="text-blue-500"
     :tools="tools"

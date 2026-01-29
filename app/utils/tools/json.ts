@@ -30,6 +30,19 @@ export function escapeJson(str: string): string {
 }
 
 /**
+ * Minifies JSON and escapes it for safe embedding in strings
+ */
+export function minifyAndEscapeJson(json: string): string {
+  try {
+    const parsed = JSON.parse(json)
+    const minified = JSON.stringify(parsed)
+    return escapeJson(minified)
+  } catch (error) {
+    throw new Error(`Invalid JSON: ${error instanceof Error ? error.message : 'Unknown error'}`)
+  }
+}
+
+/**
  * Unescapes JSON string by parsing and stringifying
  */
 export function unescapeJson(str: string): string {
