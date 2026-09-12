@@ -15,23 +15,23 @@
     "test:run": "vitest run"
   },
   "dependencies": {
-    "@iconify-json/lucide": "^1.2.86",
-    "@iconify-json/simple-icons": "^1.2.67",
-    "@nuxt/test-utils": "3.19.2",
-    "@nuxt/ui": "^4.4.0",
-    "@vueuse/nuxt": "14.1.0",
-    "modern-monaco": "^0.3.7",
+    "@iconify-json/lucide": "^1.2.131",
+    "@iconify-json/simple-icons": "^1.2.95",
+    "@nuxt/test-utils": "3.23.0",
+    "@nuxt/ui": "^4.11.1",
+    "@vueuse/nuxt": "14.4.0",
+    "modern-monaco": "^0.4.2",
     "nuxt": "^4.3.0",
-    "vue": "^3.5.27",
-    "yaml": "^2.8.2"
+    "vue": "^3.5.42",
+    "yaml": "^2.9.1"
   },
   "devDependencies": {
-    "@nuxt/eslint": "^1.13.0",
+    "@nuxt/eslint": "^1.17.0",
     "@types/yaml": "^1.9.7",
-    "eslint": "^9.39.2",
+    "eslint": "^9.39.5",
     "typescript": "^5.9.3",
-    "vitest": "^4.0.18",
-    "vue-tsc": "^3.2.3"
+    "vitest": "^4.1.11",
+    "vue-tsc": "^3.3.11"
   },
   "resolutions": {
     "unimport": "4.1.1"
